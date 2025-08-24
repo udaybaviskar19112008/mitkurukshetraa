@@ -1,5 +1,6 @@
 # app.py
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify, send_from_directory, g
+from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
 import sqlite3
@@ -7,6 +8,7 @@ from datetime import datetime
 from werkzeug.utils import secure_filename # For secure filename handling
 
 app = Flask(__name__, template_folder='../frontend', static_folder='../frontend')
+CORS(app)  # Enable CORS for all routes
 # IMPORTANT: Change this to a strong, random key!
 app.secret_key = 'your_super_secret_key_here_for_real'
 
@@ -314,7 +316,7 @@ def logout():
 if __name__ == '__main__':
     from flask import g # Import g for app context setup
     init_db() # Initialize the database tables
-    app.run(debug=True) # debug=True restarts server on code changes and provides more info
+    app.run(host='0.0.0.0', port=5000, debug=True) # debug=True restarts server on code changes and provides more info
 
 
 
