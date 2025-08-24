@@ -100,6 +100,15 @@ def student_dashboard():
 def recruiter_dashboard():
     return render_template('recruiter-dashboard.html')
 
+# Serve static files explicitly
+@app.route('/style.css')
+def serve_css():
+    return send_from_directory('../frontend', 'style.css')
+
+@app.route('/script.js')
+def serve_js():
+    return send_from_directory('../frontend', 'script.js')
+
 
 # --- API Endpoints for Student Authentication ---
 
