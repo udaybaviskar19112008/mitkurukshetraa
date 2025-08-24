@@ -6,7 +6,7 @@ import sqlite3
 from datetime import datetime
 from werkzeug.utils import secure_filename # For secure filename handling
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='../frontend', static_folder='../frontend')
 # IMPORTANT: Change this to a strong, random key!
 app.secret_key = 'your_super_secret_key_here_for_real'
 
@@ -91,12 +91,10 @@ def index():
     return render_template('index.html')
 
 @app.route('/student-dashboard.html')
-@login_required_student
 def student_dashboard():
     return render_template('student-dashboard.html')
 
 @app.route('/recruiter-dashboard.html')
-@login_required_recruiter
 def recruiter_dashboard():
     return render_template('recruiter-dashboard.html')
 

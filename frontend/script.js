@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // --- Handle Student Sign In Form Submission ---
-    studentSignInForm.addEventListener('submit', (event) => {
+    studentSignInForm.addEventListener('submit', async (event) => {
         event.preventDefault();
         const email = document.getElementById('studentEmail').value;
         const password = document.getElementById('studentPassword').value;
@@ -90,20 +90,33 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        console.log('Student Sign In Attempt:');
-        console.log('Email:', email);
-        console.log('Password:', password);
+        try {
+            const response = await fetch('/api/login-student', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, password }),
+            });
 
-        localStorage.setItem('studentEmail', email);
+            const data = await response.json();
 
-        alert('Student sign in successful! Redirecting to dashboard...');
-        setTimeout(() => {
-            window.location.href = '/student-dashboard.html';
-        }, 500);
+            if (data.success) {
+                alert('Student sign in successful! Redirecting to dashboard...');
+                setTimeout(() => {
+                    window.location.href = '/student-dashboard.html';
+                }, 500);
+            } else {
+                alert(data.message);
+            }
+        } catch (error) {
+            alert('An error occurred during login. Please try again.');
+            console.error('Login error:', error);
+        }
     });
 
     // --- Handle Student Create Account Form Submission ---
-    studentCreateAccountForm.addEventListener('submit', (event) => {
+    studentCreateAccountForm.addEventListener('submit', async (event) => {
         event.preventDefault();
         const name = newStudentNameInput.value.trim();
         const email = newStudentEmailInput.value.trim();
@@ -125,27 +138,32 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        console.log('Student Create Account Attempt:');
-        console.log('Name:', name);
-        console.log('Email:', email);
-        console.log('Password:', password);
+        try {
+            const response = await fetch('/api/register-student', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ name, email, password }),
+            });
 
-        localStorage.setItem('studentEmail', email);
-        localStorage.setItem('studentProfileData', JSON.stringify({
-            name: name,
-            email: email,
-            major: "Not specified",
-            status: "New User"
-        }));
+            const data = await response.json();
 
-        alert('New student account created successfully! Redirecting to dashboard...');
-        setTimeout(() => {
-            window.location.href = '/student-dashboard.html';
-        }, 500);
+            if (data.success) {
+                alert('New student account created successfully! Please sign in.');
+                // Switch to sign in tab
+                activateStudentSubTab('signIn');
+            } else {
+                alert(data.message);
+            }
+        } catch (error) {
+            alert('An error occurred during registration. Please try again.');
+            console.error('Registration error:', error);
+        }
     });
 
     // --- Handle Recruiter Form Submission ---
-    recruiterForm.addEventListener('submit', (event) => {
+    recruiterForm.addEventListener('submit', async (event) => {
         event.preventDefault();
         const email = document.getElementById('recruiterEmail').value;
         const password = document.getElementById('recruiterPassword').value;
@@ -155,14 +173,29 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        console.log('Recruiter Login Attempt:');
-        console.log('Email:', email);
-        console.log('Password:', password);
+        try {
+            const response = await fetch('/api/login-recruiter', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, password }),
+            });
 
-        alert('Recruiter login successful! Redirecting to dashboard...');
-        setTimeout(() => {
-            window.location.href = '/recruiter-dashboard.html';
-        }, 500);
+            const data = await response.json();
+
+            if (data.success) {
+                alert('Recruiter login successful! Redirecting to dashboard...');
+                setTimeout(() => {
+                    window.location.href = '/recruiter-dashboard.html';
+                }, 500);
+            } else {
+                alert(data.message);
+            }
+        } catch (error) {
+            alert('An error occurred during login. Please try again.');
+            console.error('Login error:', error);
+        }
     });
 
     // Initial activation
