@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gemini Q&A</title>
+</head>
+<body>
+    <h1>Ask Gemini</h1>
+    <form method="POST">
+        <input type="text" name="question" placeholder="Enter your question">
+        <button type="submit">Ask</button>
+    </form>
+    {% if answer %}
+        <h2>Answer: {{ answer }}</h2>
+    {% endif %}
+</body>
+</html>
